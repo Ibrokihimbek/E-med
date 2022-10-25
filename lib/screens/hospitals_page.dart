@@ -33,59 +33,61 @@ class _HospitalsPageState extends State<HospitalsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            AppbarWidget(),
-            Padding(
-              padding: const EdgeInsets.only(left: 20).r,
-              child: Column(
-                children: [
-                  Text(
-                    'Recommended hospitals for you',
-                    style: GoogleFonts.familjenGrotesk(
-                      textStyle: TextStyle(
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.w600,
-                        color: MyColors.C_6A6975,
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              AppbarWidget(),
+              Padding(
+                padding: const EdgeInsets.only(left: 20).r,
+                child: Column(
+                  children: [
+                    Text(
+                      'Recommended hospitals for you',
+                      style: GoogleFonts.familjenGrotesk(
+                        textStyle: TextStyle(
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w600,
+                          color: MyColors.C_6A6975,
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            SizedBox(height: MediaQuery.of(context).size.height * 0.024.h),
-            FutureBuilder<List<HospitalsModel>>(
-              future: getData(),
-              builder: (BuildContext context,
-                  AsyncSnapshot<List<HospitalsModel>> snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-                if (snapshot.hasError) {
-                  return Center(
-                    child: Text(snapshot.error.toString()),
-                  );
-                }
-                if (snapshot.connectionState == ConnectionState.done) {
-                  if (snapshot.hasData) {
-                    List<HospitalsModel> hospitals = HospitalsModel.hospitals;
-                    return HospitalsWidget(hospital: hospitals);
+              SizedBox(height: MediaQuery.of(context).size.height * 0.024.h),
+              FutureBuilder<List<HospitalsModel>>(
+                future: getData(),
+                builder: (BuildContext context,
+                    AsyncSnapshot<List<HospitalsModel>> snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
                   }
-                }
-                return Container(
-                  child: const Center(
-                    child: Text(
-                      "Nimdir xatolik bor",
-                      style: TextStyle(fontSize: 24),
+                  if (snapshot.hasError) {
+                    return Center(
+                      child: Text(snapshot.error.toString()),
+                    );
+                  }
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    if (snapshot.hasData) {
+                      List<HospitalsModel> hospitals = HospitalsModel.hospitals;
+                      return HospitalsWidget(hospital: hospitals);
+                    }
+                  }
+                  return Container(
+                    child: const Center(
+                      child: Text(
+                        "Nimdir xatolik bor",
+                        style: TextStyle(fontSize: 24),
+                      ),
                     ),
-                  ),
-                );
-              },
-            ),
-          ],
+                  );
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -32,59 +32,61 @@ class _DoctorPageState extends State<DoctorPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            AppbarWidget(),
-            Padding(
-              padding: const EdgeInsets.only(left: 20).r,
-              child: Column(
-                children: [
-                  Text(
-                    'Recommended doctors for you',
-                    style: GoogleFonts.familjenGrotesk(
-                      textStyle: TextStyle(
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.w600,
-                        color: MyColors.C_6A6975,
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              AppbarWidget(),
+              Padding(
+                padding: const EdgeInsets.only(left: 20).r,
+                child: Column(
+                  children: [
+                    Text(
+                      'Recommended doctors for you',
+                      style: GoogleFonts.familjenGrotesk(
+                        textStyle: TextStyle(
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w600,
+                          color: MyColors.C_6A6975,
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            SizedBox(height: MediaQuery.of(context).size.height * 0.024.h),
-            FutureBuilder<List<DoctorsModel>>(
-              future: getData(),
-              builder: (BuildContext context,
-                  AsyncSnapshot<List<DoctorsModel>> snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-                if (snapshot.hasError) {
-                  return Center(
-                    child: Text(snapshot.error.toString()),
-                  );
-                }
-                if (snapshot.connectionState == ConnectionState.done) {
-                  if (snapshot.hasData) {
-                    List<DoctorsModel> doctors = DoctorsModel.doctors;
-                    return DoctorsWidget(doctors: doctors);
+              SizedBox(height: MediaQuery.of(context).size.height * 0.024.h),
+              FutureBuilder<List<DoctorsModel>>(
+                future: getData(),
+                builder: (BuildContext context,
+                    AsyncSnapshot<List<DoctorsModel>> snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
                   }
-                }
-                return const SizedBox(
-                  child: Center(
-                    child: Text(
-                      "Nimdir xatolik bor",
-                      style: TextStyle(fontSize: 24),
+                  if (snapshot.hasError) {
+                    return Center(
+                      child: Text(snapshot.error.toString()),
+                    );
+                  }
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    if (snapshot.hasData) {
+                      List<DoctorsModel> doctors = DoctorsModel.doctors;
+                      return DoctorsWidget(doctors: doctors);
+                    }
+                  }
+                  return const SizedBox(
+                    child: Center(
+                      child: Text(
+                        "Nimdir xatolik bor",
+                        style: TextStyle(fontSize: 24),
+                      ),
                     ),
-                  ),
-                );
-              },
-            ),
-          ],
+                  );
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
